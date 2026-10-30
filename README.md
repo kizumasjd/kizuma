@@ -17,8 +17,8 @@ npm run data -- <ruta>  # regenera src/data/recursos.json desde el JSON categori
 
 ## Publicación (GitHub Pages)
 
-- `main` se publica solo, con el flujo `.github/workflows/deploy.yml`, en <https://kizuname.github.io/kizuna/>.
+- `main` se publica solo, con el flujo `.github/workflows/deploy.yml`, en <https://kizuname.github.io/kizuma/>.
 - Otras ramas (p. ej. `develop`) solo se compilan para comprobar que no se rompe nada (`ci.yml`).
-- La ruta base se define con la variable `BASE_PATH` (`/kizuna/` en Pages, `/` en local).
+- La ruta base se define con la variable `BASE_PATH` (`/<nombre-del-repositorio>/` en Pages, calculada por el flujo; `/` en local).
 - Los enlaces directos funcionan porque en la compilación `index.html` se copia como `404.html`.
 - La web incluye `noindex` mientras el contenido esté pendiente: quitar la etiqueta `robots` de `index.html` al publicar de forma definitiva.

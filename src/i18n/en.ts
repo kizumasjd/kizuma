@@ -146,7 +146,6 @@ const en: typeof es = {
       'Resource data comes from the Guía ON Barcelona 2026 (Comunitat de Sant’Egidio) and is shown in its original language.',
   },
   sleep: {
-    sheltersTitle: 'Looking for a place to stay?',
     start: 'Sleep · Let’s start',
     question: 'Question {{n}}',
     questionOf: 'Question {{n}} of {{total}}',
@@ -191,7 +190,6 @@ const en: typeof es = {
     online: 'Book online',
     howToGet: 'How to get there',
     change: 'Change my answers',
-    seeShelters: 'See shelters in the guide',
     sheltersNote: 'Some shelters require a referral. If in doubt, call 010.',
   },
 }

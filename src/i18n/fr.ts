@@ -146,7 +146,6 @@ const fr: typeof es = {
       'Les données des ressources proviennent du Guía ON Barcelona 2026 (Comunitat de Sant’Egidio) et sont affichées dans leur langue d’origine.',
   },
   sleep: {
-    sheltersTitle: 'Tu cherches un hébergement ?',
     start: 'Dormir · On commence',
     question: 'Question {{n}}',
     questionOf: 'Question {{n}} sur {{total}}',
@@ -191,7 +190,6 @@ const fr: typeof es = {
     online: 'Prendre rendez-vous sur internet',
     howToGet: 'Comment y aller',
     change: 'Modifier mes réponses',
-    seeShelters: 'Voir les hébergements du guide',
     sheltersNote: 'Certains hébergements demandent une orientation. En cas de doute, appelle le 010.',
   },
 }

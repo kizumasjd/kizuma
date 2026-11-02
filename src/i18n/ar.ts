@@ -142,7 +142,6 @@ const ar = {
       'بيانات الموارد مأخوذة من دليل Guía ON Barcelona 2026 (Comunitat de Sant’Egidio) وتُعرض بلغتها الأصلية.',
   },
   sleep: {
-    sheltersTitle: 'هل تبحث عن مكان للإيواء؟',
     start: 'النوم · لنبدأ',
     question: 'السؤال {{n}}',
     questionOf: 'السؤال {{n}} من {{total}}',
@@ -185,7 +184,6 @@ const ar = {
     online: 'احجز موعدًا عبر الإنترنت',
     howToGet: 'كيف تصل',
     change: 'تغيير إجاباتي',
-    seeShelters: 'عرض أماكن الإيواء في الدليل',
     sheltersNote: 'بعض أماكن الإيواء تتطلب إحالة. إذا كنت في شك، اتصل بالرقم 010.',
   },
 } as unknown as typeof es

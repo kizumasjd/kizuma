@@ -2,7 +2,6 @@ import {
   BedSingle,
   CalendarDays,
   ChevronLeft,
-  CircleAlert,
   Globe,
   IdCard,
   Lock,
@@ -12,7 +11,7 @@ import {
 } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { CONTACT, LINKS, mapsQuery } from '../config/links'
 
 type Step = 'street' | 'padron' | 'eu' | 'soass' | 'r01' | 'r02' | 'r03'
@@ -290,19 +289,6 @@ function Result({ step, onReset }: { step: 'r01' | 'r02' | 'r03'; onReset: () =>
           <Thermometer size={20} color="var(--text-accent)" aria-hidden />
           {t('sleep.coldNote')}
         </p>
-      </section>
-
-      <section className="card mini">
-        <h3>
-          <CircleAlert size={20} aria-hidden />
-          {t('sleep.sheltersTitle')}
-        </h3>
-        <p className="note" style={{ marginBottom: 12 }}>
-          {t('sleep.sheltersNote')}
-        </p>
-        <Link className="btn block" to="/buscar/dormir">
-          {t('sleep.seeShelters')}
-        </Link>
       </section>
 
       <button type="button" className="link-btn" onClick={onReset}>

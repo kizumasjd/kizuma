@@ -143,7 +143,6 @@ const es = {
     source: 'Los datos de los recursos proceden de la Guía ON Barcelona 2026 (Comunitat de Sant’Egidio) y se muestran en su idioma original.',
   },
   sleep: {
-    sheltersTitle: '¿Buscas un alojamiento?',
     start: 'Dormir · Empezamos',
     question: 'Pregunta {{n}}',
     questionOf: 'Pregunta {{n}} de {{total}}',
@@ -188,7 +187,6 @@ const es = {
     online: 'Pedir cita por internet',
     howToGet: 'Cómo llegar',
     change: 'Cambiar mis respuestas',
-    seeShelters: 'Ver alojamientos de la guía',
     sheltersNote: 'Algunos alojamientos requieren derivación. Si tienes dudas, llama al 010.',
   },
 }

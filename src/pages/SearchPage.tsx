@@ -3,8 +3,10 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import CategoryList from '../components/CategoryList'
+import GeoControl from '../components/GeoControl'
 import ResourceCard from '../components/ResourceCard'
 import { buscar, getRecurso } from '../lib/data'
+import { distanceM, useGeo } from '../lib/geo'
 import { useIsDesktop } from '../lib/useIsDesktop'
 import { CATEGORIAS, SUBTIPOS, type Categoria } from '../lib/types'
 
@@ -51,9 +53,21 @@ function Results({ categoria }: { categoria: Categoria }) {
     setLimit(PAGE)
   }
 
-  const items = useMemo(
+  const { pos, status, request, clear } = useGeo()
+
+  const found = useMemo(
     () => buscar({ categoria, zona, abiertoAhora: abierto, derivacion: der, subtipo: sub }),
     [categoria, zona, abierto, der, sub],
+  )
+  // Con ubicación, los sitios se ordenan por cercanía (los que no tienen coordenadas, al final). Se calcula en local.
+  const distances = useMemo(() => {
+    const m = new Map<string, number>()
+    if (pos) for (const r of found) if (r.lat != null && r.lon != null) m.set(r.id, distanceM(pos, r.lat, r.lon))
+    return m
+  }, [found, pos])
+  const items = useMemo(
+    () => (pos ? [...found].sort((a, b) => (distances.get(a.id) ?? Infinity) - (distances.get(b.id) ?? Infinity)) : found),
+    [found, distances, pos],
   )
   const sinUbicacion = items.filter((r) => r.lat == null).length
   const selected = sel ? getRecurso(sel) : undefined
@@ -111,6 +125,8 @@ function Results({ categoria }: { categoria: Categoria }) {
           {countText}
         </p>
 
+        <GeoControl active={pos != null} status={status} onLocate={request} onStop={clear} />
+
         <div className="chips" role="group">
           <button type="button" className="chip" aria-pressed={abierto} onClick={() => set({ abierto: abierto ? null : '1' })}>
             {abierto && <Check size={16} aria-hidden />}
@@ -150,6 +166,7 @@ function Results({ categoria }: { categoria: Categoria }) {
                     key={r.id}
                     r={r}
                     selected={r.id === sel}
+                    distance={distances.get(r.id)}
                     ref={(el) => {
                       if (el) refs.current.set(r.id, el)
                       else refs.current.delete(r.id)
@@ -168,14 +185,14 @@ function Results({ categoria }: { categoria: Categoria }) {
               <div>
                 <div className="map-wrap">
                   <Suspense fallback={<div aria-busy="true" style={{ height: '100%' }} />}>
-                    <MapView items={items} selectedId={sel} onSelect={(id) => set({ sel: id })} />
+                    <MapView items={items} selectedId={sel} onSelect={(id) => set({ sel: id })} me={pos} />
                   </Suspense>
                   {!desktop && selected && items.some((r) => r.id === selected.id) && (
                     <div className="map-card">
                       <button type="button" className="map-card-close" aria-label={t('common.close')} onClick={() => set({ sel: null })}>
                         <X size={22} aria-hidden />
                       </button>
-                      <ResourceCard r={selected} />
+                      <ResourceCard r={selected} distance={distances.get(selected.id)} />
                     </div>
                   )}
                 </div>

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { dirHref, etiquetas, openNow, telHref } from '../lib/data'
 import { useFavorites } from '../lib/favorites'
+import { formatDistance } from '../lib/geo'
 import type { Recurso } from '../lib/types'
 
 export function accessBadge(r: Recurso): { key: string; tone: 'ok' | 'warn' } | null {
@@ -34,10 +35,12 @@ interface Props {
   r: Recurso
   selected?: boolean
   onFocus?: () => void
+  /** Distancia en metros desde la ubicación del usuario, si la ha compartido. */
+  distance?: number
 }
 
-const ResourceCard = forwardRef<HTMLElement, Props>(function ResourceCard({ r, selected, onFocus }, ref) {
-  const { t } = useTranslation()
+const ResourceCard = forwardRef<HTMLElement, Props>(function ResourceCard({ r, selected, onFocus, distance }, ref) {
+  const { t, i18n } = useTranslation()
   const badge = accessBadge(r)
   const open = openNow(r)
   const tel = telHref(r.tel)
@@ -63,6 +66,7 @@ const ResourceCard = forwardRef<HTMLElement, Props>(function ResourceCard({ r, s
           <div>
             <p className="addr">{place}</p>
             {area && <p className="addr-sub">{area}</p>}
+            {distance != null && <p className="distance">{t('geo.away', { d: formatDistance(distance, i18n.language) })}</p>}
           </div>
           {(r.direccion || r.lat != null) && (
             <a className="go-btn" href={dirHref(r)} target="_blank" rel="noreferrer" aria-label={t('common.directions')}>

@@ -1,4 +1,4 @@
-import { Heart, House, Menu, Search } from 'lucide-react'
+import { Heart, House, Menu } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link, Navigate, Outlet, useLocation } from 'react-router-dom'
 import { hasChosenLanguage } from '../i18n'
@@ -13,7 +13,6 @@ export default function Layout() {
 
   const items = [
     { id: 'home', to: '/', icon: House, label: t('nav.home') },
-    { id: 'search', to: '/buscar', icon: Search, label: t('nav.search') },
     { id: 'fav', to: '/favoritos', icon: Heart, label: t('nav.favorites') },
     { id: 'more', to: '/mas', icon: Menu, label: t('nav.more') },
   ]

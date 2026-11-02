@@ -1,7 +1,9 @@
 import L from 'leaflet'
 import { useEffect, useMemo } from 'react'
-import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
+import { useTranslation } from 'react-i18next'
+import { Circle, MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
 import { openNow } from '../lib/data'
+import type { Pos } from '../lib/geo'
 import type { Recurso } from '../lib/types'
 
 const BCN: [number, number] = [41.3874, 2.1686]
@@ -43,13 +45,31 @@ function Fit({ items, selected }: { items: Recurso[]; selected?: Recurso }) {
   return null
 }
 
+const ME_ICON = L.divIcon({ className: '', html: '<div class="me-dot"></div>', iconSize: [18, 18], iconAnchor: [9, 9] })
+
+/** Radio del círculo que marca la zona aproximada del usuario. */
+const ME_RADIUS = 1000
+
+/** Al obtener la ubicación se encuadra el círculo de 1 km. */
+function FitMe({ me }: { me: Pos | null }) {
+  const map = useMap()
+  useEffect(() => {
+    if (!me) return
+    map.invalidateSize()
+    map.fitBounds(L.latLng(me.lat, me.lon).toBounds(ME_RADIUS * 2), { padding: [24, 24] })
+  }, [map, me])
+  return null
+}
+
 interface Props {
   items: Recurso[]
   selectedId: string | null
   onSelect: (id: string) => void
+  me?: Pos | null
 }
 
-export default function MapView({ items, selectedId, onSelect }: Props) {
+export default function MapView({ items, selectedId, onSelect, me = null }: Props) {
+  const { t } = useTranslation()
   const pins = useMemo(() => items.filter((r) => r.lat != null && r.lon != null), [items])
   const selected = pins.find((r) => r.id === selectedId)
 
@@ -60,6 +80,18 @@ export default function MapView({ items, selectedId, onSelect }: Props) {
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <Fit items={pins} selected={selected} />
+      <FitMe me={me} />
+      {me && (
+        <>
+          <Circle
+            center={[me.lat, me.lon]}
+            radius={ME_RADIUS}
+            interactive={false}
+            pathOptions={{ color: '#0077b6', weight: 2, fillColor: '#0077b6', fillOpacity: 0.12 }}
+          />
+          <Marker position={[me.lat, me.lon]} icon={ME_ICON} interactive={false} keyboard={false} title={t('geo.me')} />
+        </>
+      )}
       {pins.map((r) => (
         <Marker
           key={r.id}
